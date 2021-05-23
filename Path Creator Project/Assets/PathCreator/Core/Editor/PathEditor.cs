@@ -132,7 +132,7 @@ namespace PathCreationEditor {
                                 creator.bezierPath.MovePoint (handleIndexToDisplayAsTransform, newPosition);
                             }
                             // Don't draw the angle field if we aren't selecting an anchor point/not in 3d space
-                            if (handleIndexToDisplayAsTransform % 3 == 0 && creator.bezierPath.Space == PathSpace.xyz) {
+                            if (handleIndexToDisplayAsTransform % 3 == 0) {
                                 var anchorIndex = handleIndexToDisplayAsTransform / 3;
                                 var currentAngle = creator.bezierPath.GetAnchorNormalAngle (anchorIndex);
                                 var newAngle = EditorGUILayout.FloatField ("Angle", currentAngle);
@@ -184,15 +184,14 @@ namespace PathCreationEditor {
                 data.showNormals = EditorGUILayout.Foldout (data.showNormals, new GUIContent ("Normals Options"), true, boldFoldoutStyle);
                 if (data.showNormals) {
                     bezierPath.FlipNormals = EditorGUILayout.Toggle (new GUIContent ("Flip Normals"), bezierPath.FlipNormals);
-                    if (bezierPath.Space == PathSpace.xyz) {
-                        bezierPath.GlobalNormalsAngle = EditorGUILayout.Slider (new GUIContent ("Global Angle"), bezierPath.GlobalNormalsAngle, 0, 360);
+                    bezierPath.GlobalNormalsAngle = EditorGUILayout.Slider (new GUIContent ("Global Angle"), bezierPath.GlobalNormalsAngle, 0, 360);
 
-                        if (GUILayout.Button ("Reset Normals")) {
-                            Undo.RecordObject (creator, "Reset Normals");
-                            bezierPath.FlipNormals = false;
-                            bezierPath.ResetNormalAngles ();
-                        }
+                    if (GUILayout.Button ("Reset Normals")) {
+                        Undo.RecordObject (creator, "Reset Normals");
+                        bezierPath.FlipNormals = false;
+                        bezierPath.ResetNormalAngles ();
                     }
+
                     GUILayout.Space (inspectorSectionSpacing);
                 }
 
